@@ -12,14 +12,14 @@ public class ControllerFunctions {
         response.put("apiversion", "1");
         response.put("author", "keviqi");
         response.put("color", "#33ffff");     
-        response.put("head", "shades");  
+        response.put("head", "evil");  
         response.put("tail", "rattle");  
         return response;
     }
 	public static Map<String, String> move(JsonNode moveRequest) {
 		Constants.setWidth(moveRequest.get("board").get("width").asInt());
 		Constants.setHeight(moveRequest.get("board").get("height").asInt());
-		Constants.setHealth(moveRequest.get("battlesnake").get("health").asInt());
+		Constants.setHealth(moveRequest.get("you").get("health").asInt());
 		
         int[][] gameBoard = new int[Constants.WIDTH][Constants.HEIGHT];
         
