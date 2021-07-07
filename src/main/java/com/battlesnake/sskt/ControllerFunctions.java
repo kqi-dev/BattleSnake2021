@@ -11,7 +11,7 @@ public class ControllerFunctions {
         Map<String, String> response = new HashMap<>();
         response.put("apiversion", "1");
         response.put("author", "keviqi");
-        response.put("color", "#14fffb");     
+        response.put("color", "#33ffff");     
         response.put("head", "shades");  
         response.put("tail", "rattle");  
         return response;
@@ -55,7 +55,9 @@ public class ControllerFunctions {
         		gameBoard[xCoord][yCoord] = Constants.ENEMYBODY;
         	}
         }
-        
+        /*
+         * Loading food data
+         */
         JsonNode foodData = moveRequest.get("board").get("food");
         for(JsonNode foodLocation : foodData) {
         	int foodX = foodLocation.get("x").asInt();
@@ -64,9 +66,26 @@ public class ControllerFunctions {
         	gameBoard[foodX][foodY] = Constants.FOOD;
         }
         
+        /*
+         * 
+         * MOVE DECISION
+         * 
+         */
+		String move = "";
+        
+        //if we are closer to a food item than anyone else, meaning we can get there first, then path there
+        CoordinatePair target = null;
+        for(CoordinatePair food : foodCoordinates) {
+        	if(UtilFunctions.isClosestTo(snakeCoordinates, food)) {
+        		target = food;
+        		break;
+        	}
+        }
+        if(target != null) {
+        	move = UtilFunctions.moveToTarget(gameBoard, snakeCoordinates.get(0).get(0), target);
+        }
         
 
-		String move = "";
         Map<String, String> response = new HashMap<>();
         response.put("move", move);
         return response;

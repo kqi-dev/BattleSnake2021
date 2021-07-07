@@ -15,4 +15,8 @@ public class CoordinatePair {
 		ret[1] = y;
 		return ret;
 	}
+	
+	int cardinalDistanceTo(CoordinatePair destination) {
+		return Math.abs(destination.x - x) + Math.abs(destination.y - y);
+	}
 }
