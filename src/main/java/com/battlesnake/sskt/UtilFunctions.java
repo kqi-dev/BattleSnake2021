@@ -136,19 +136,19 @@ public class UtilFunctions {
 			return false;
 		case "right":
 			newSquare = new CoordinatePair(snakeHead.x + 1, snakeHead.y);
-			if(newSquare.isValid() && (gameBoard[snakeHead.x + 1][snakeHead.y] == 0 || gameBoard[snakeHead.x][snakeHead.y + 1] == 5)) {
+			if(newSquare.isValid() && (gameBoard[snakeHead.x + 1][snakeHead.y] == 0 || gameBoard[snakeHead.x + 1][snakeHead.y] == 5)) {
 				return true;
 			}
 			return false;
 		case "down":
 			newSquare = new CoordinatePair(snakeHead.x, snakeHead.y - 1);
-			if(newSquare.isValid() && (gameBoard[snakeHead.x][snakeHead.y - 1] == 0 || gameBoard[snakeHead.x][snakeHead.y + 1] == 5)) {
+			if(newSquare.isValid() && (gameBoard[snakeHead.x][snakeHead.y - 1] == 0 || gameBoard[snakeHead.x][snakeHead.y - 1] == 5)) {
 				return true;
 			}
 			return false;
 		case "left":
 			newSquare = new CoordinatePair(snakeHead.x - 1, snakeHead.y);
-			if(newSquare.isValid() && (gameBoard[snakeHead.x - 1][snakeHead.y] == 0 || gameBoard[snakeHead.x][snakeHead.y + 1] == 5)) {
+			if(newSquare.isValid() && (gameBoard[snakeHead.x - 1][snakeHead.y] == 0 || gameBoard[snakeHead.x - 1][snakeHead.y] == 5)) {
 				return true;
 			}
 			return false;
