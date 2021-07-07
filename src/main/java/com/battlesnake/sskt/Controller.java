@@ -18,7 +18,7 @@ import static spark.Spark.post;
 import static spark.Spark.get;
 
 public class Controller {
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+	private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
     private static final Handler HANDLER = new Handler();
     private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
 
@@ -94,13 +94,7 @@ public class Controller {
          *         values.
          */
         public Map<String, String> index() {         
-            Map<String, String> response = new HashMap<>();
-            response.put("apiversion", "1");
-            response.put("author", "keviqi");
-            response.put("color", "#ff97fe");     // TODO: Personalize
-            response.put("head", "smile");  // TODO: Personalize
-            response.put("tail", "curled");  // TODO: Personalize
-            return response;
+            return ControllerFunctions.setupValues();
         }
 
         /**
@@ -130,41 +124,7 @@ public class Controller {
                 e.printStackTrace();
             }
             
-            int[][] gameBoard = new int[moveRequest.get("board").get("width").asInt()][moveRequest.get("board").get("height").asInt()];
-            
-            JsonNode yourSnake = moveRequest.get("you").get("body");
-            JsonNode yourSnakeHead = moveRequest.get("you").get("head");
-            int yourHeadX = yourSnakeHead.get("x").asInt();
-            int yourHeadY = yourSnakeHead.get("y").asInt();
-            for(JsonNode segments : moveRequest.get("you").get("body")){
-              int xCoord = segments.get("x").asInt();
-              int yCoord = segments.get("y").asInt();
-              gameBoard[xCoord][yCoord] = 1;
-            }
-
-            JsonNode otherSnakes = moveRequest.get("board").get("snakes");
-            ArrayList<Integer> otherHeadsX = new ArrayList<Integer>();
-            ArrayList<Integer> otherHeadsY = new ArrayList<Integer>();
-            for(JsonNode snakes : otherSnakes){
-              if(snakes.get("id").equals(moveRequest.get("you").get("id"))){
-                continue;
-              }
-              for(JsonNode segments : snakes.get("body")){
-                int xCoord = segments.get("x").asInt();
-                int yCoord = segments.get("y").asInt();
-                gameBoard[xCoord][yCoord] = 2;
-              }
-              otherHeadsX.add(snakes.get("head").get("x").asInt());
-              otherHeadsY.add(snakes.get("head").get("y").asInt());
-            }
-
-            String move = decideDirection(yourHeadX, yourHeadY, otherHeadsX, otherHeadsY, gameBoard);
-
-            LOG.info("MOVE {}", move);
-
-            Map<String, String> response = new HashMap<>();
-            response.put("move", move);
-            return response;
+            return ControllerFunctions.move(moveRequest);
         }
 
         /**
