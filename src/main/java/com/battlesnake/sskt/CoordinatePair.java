@@ -19,4 +19,14 @@ public class CoordinatePair {
 	int cardinalDistanceTo(CoordinatePair destination) {
 		return Math.abs(destination.x - x) + Math.abs(destination.y - y);
 	}
+	
+	boolean isValid() {
+		if(x < 0 || x >= Constants.WIDTH) {
+			return false;
+		}
+		if(y < 0 || y >= Constants.HEIGHT) {
+			return false;
+		}
+		return true;
+	}
 }

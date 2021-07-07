@@ -40,68 +40,120 @@ public class UtilFunctions {
 	
 	static String moveToTarget(int[][] gameBoard, CoordinatePair snakeHead, CoordinatePair target) {
 		if(snakeHead.x == target.x && snakeHead.y == target.y) {
-			return safeMove("random");
+			return safeMove(gameBoard, snakeHead, "random");
 		}
 		if(snakeHead.x == target.x && snakeHead.y < target.y) {
-			return safeMove("up");
+			return safeMove(gameBoard, snakeHead, "up");
 		}
 		if(snakeHead.x == target.x && snakeHead.y > target.y) {
-			return safeMove("down");
+			return safeMove(gameBoard, snakeHead, "down");
 		}
 		if(snakeHead.x < target.x && snakeHead.y == target.y) {
-			return safeMove("right");
+			return safeMove(gameBoard, snakeHead, "right");
 		}
 		if(snakeHead.x > target.x && snakeHead.y == target.y) {
-			return safeMove("left");
+			return safeMove(gameBoard, snakeHead, "left");
 		}
 		if(snakeHead.x < target.x && snakeHead.y < target.y) {
 			if(0.5 < Math.random()) {
-				return safeMove("right");
+				return safeMove(gameBoard, snakeHead, "right");
 			}
 			else {
-				return safeMove("up");
+				return safeMove(gameBoard, snakeHead, "up");
 			}
 		}
 		if(snakeHead.x < target.x && snakeHead.y > target.y) {
 			if(0.5 < Math.random()) {
-				return safeMove("right");
+				return safeMove(gameBoard, snakeHead, "right");
 			}
 			else {
-				return safeMove("down");
+				return safeMove(gameBoard, snakeHead, "down");
 			}
 		}
 		if(snakeHead.x > target.x && snakeHead.y < target.y) {
 			if(0.5 < Math.random()) {
-				return safeMove("left");
+				return safeMove(gameBoard, snakeHead, "left");
 			}
 			else {
-				return safeMove("up");
+				return safeMove(gameBoard, snakeHead, "up");
 			}
 		}
 		if(snakeHead.x > target.x && snakeHead.y > target.y) {
 			if(0.5 < Math.random()) {
-				return safeMove("left");
+				return safeMove(gameBoard, snakeHead, "left");
 			}
 			else {
-				return safeMove("down");
+				return safeMove(gameBoard, snakeHead, "down");
 			}
 		}
 		return "null";
 	}
 	
-	static String safeMove(String direction) {
+	static String safeMove(int[][] gameBoard, CoordinatePair snakeHead, String direction) {
 		switch(direction) {
 		case "up":
-			return "up";
+			if(isValidMove(gameBoard, snakeHead, "up")) {
+				return "up";
+			}
+			else {
+				return safeMove(gameBoard, snakeHead, "right");
+			}
 		case "right":
-			return "right";
+			if(isValidMove(gameBoard, snakeHead, "right")) {
+				return "right";
+			}
+			else {
+				return safeMove(gameBoard, snakeHead, "down");
+			}
 		case "down":
-			return "down";
+			if(isValidMove(gameBoard, snakeHead, "down")) {
+				return "down";
+			}
+			else {
+				return safeMove(gameBoard, snakeHead, "left");
+			}
 		case "left":
-			return "left";
+			if(isValidMove(gameBoard, snakeHead, "left")) {
+				return "left";
+			}
+			else {
+				return safeMove(gameBoard, snakeHead, "up");
+			}
 		case "random":
 			return Constants.CARDINALMOVEMENTS[(int)(Math.random() * 4)];
 		}
 		return "null";
+	}
+	
+	static boolean isValidMove(int[][] gameBoard, CoordinatePair snakeHead, String direction) {
+		CoordinatePair newSquare;
+		switch(direction) {
+		case "up":
+			newSquare = new CoordinatePair(snakeHead.x, snakeHead.y + 1);
+			if(newSquare.isValid() && (gameBoard[snakeHead.x][snakeHead.y + 1] == 0 || gameBoard[snakeHead.x][snakeHead.y + 1] == 5)) {
+				return true;
+			}
+			return false;
+		case "right":
+			newSquare = new CoordinatePair(snakeHead.x + 1, snakeHead.y);
+			if(newSquare.isValid() && (gameBoard[snakeHead.x + 1][snakeHead.y] == 0 || gameBoard[snakeHead.x][snakeHead.y + 1] == 5)) {
+				return true;
+			}
+			return false;
+		case "down":
+			newSquare = new CoordinatePair(snakeHead.x, snakeHead.y - 1);
+			if(newSquare.isValid() && (gameBoard[snakeHead.x][snakeHead.y - 1] == 0 || gameBoard[snakeHead.x][snakeHead.y + 1] == 5)) {
+				return true;
+			}
+			return false;
+		case "left":
+			newSquare = new CoordinatePair(snakeHead.x - 1, snakeHead.y);
+			if(newSquare.isValid() && (gameBoard[snakeHead.x - 1][snakeHead.y] == 0 || gameBoard[snakeHead.x][snakeHead.y + 1] == 5)) {
+				return true;
+			}
+			return false;
+		default:
+			return false;
+		}
 	}
 }
