@@ -91,6 +91,14 @@ public class UtilFunctions {
 	
 	static String safeMove(String direction) {
 		switch(direction) {
+		case "up":
+			return "up";
+		case "right":
+			return "right";
+		case "down":
+			return "down";
+		case "left":
+			return "left";
 		case "random":
 			return Constants.CARDINALMOVEMENTS[(int)(Math.random() * 4)];
 		}
