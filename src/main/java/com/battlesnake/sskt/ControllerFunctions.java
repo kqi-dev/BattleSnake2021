@@ -11,7 +11,7 @@ public class ControllerFunctions {
         Map<String, String> response = new HashMap<>();
         response.put("apiversion", "1");
         response.put("author", "keviqi");
-        response.put("color", "#ff97fe");     
+        response.put("color", "#14fffb");     
         response.put("head", "shades");  
         response.put("tail", "rattle");  
         return response;
