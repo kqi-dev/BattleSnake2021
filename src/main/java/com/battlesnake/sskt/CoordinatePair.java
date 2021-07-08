@@ -1,5 +1,7 @@
 package com.battlesnake.sskt;
 
+import java.util.ArrayList;
+
 public class CoordinatePair {
 	int x;
 	int y;
@@ -28,6 +30,13 @@ public class CoordinatePair {
 			return false;
 		}
 		return true;
+	}
+	
+	boolean canMoveTo(int[][] gameBoard) {
+		if(gameBoard[x][y] == Constants.EMPTYSQUARE || gameBoard[x][y] == Constants.FOOD) {
+			return true;
+		}
+		return false;
 	}
 	
 	CoordinatePair newAdjacent(String direction) {
@@ -87,16 +96,125 @@ public class CoordinatePair {
 	String moveWithMostEmptyAdjacent(int[][] gameBoard) {
 		String move = "up";
 		int mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-		if(mostEmpty < newAdjacent("right").numEmptyAdjacent(gameBoard)) {
-			move = "right";
+		boolean moveIsValid = false;
+		if(newAdjacent(move).isValid() && newAdjacent(move).canMoveTo(gameBoard)) {
+			moveIsValid = true;
 		}
-		if(mostEmpty < newAdjacent("down").numEmptyAdjacent(gameBoard)) {
-			move = "down";
+		
+		CoordinatePair temp;
+		
+		temp = newAdjacent("right");
+		if(temp.isValid() && temp.canMoveTo(gameBoard)) {
+			if(moveIsValid == false) {
+				move = "right";
+				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				moveIsValid = true;
+			}
+			else {
+				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
+					move = "right";
+					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				}
+			}
 		}
-		if(mostEmpty < newAdjacent("left").numEmptyAdjacent(gameBoard)) {
-			move = "left";
+		
+		temp = newAdjacent("down");
+		if(temp.isValid() && temp.canMoveTo(gameBoard)) {
+			if(moveIsValid == false) {
+				move = "down";
+				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				moveIsValid = true;
+			}
+			else {
+				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
+					move = "down";
+					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				}
+			}
+		}
+
+		temp = newAdjacent("left");
+		if(temp.isValid() && temp.canMoveTo(gameBoard)) {
+			if(moveIsValid == false) {
+				move = "left";
+				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				moveIsValid = true;
+			}
+			else {
+				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
+					move = "left";
+					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				}
+			}
 		}
 		
 		return move;
 	}
+	String diffMoveWithMostEmptyAdjacent(int[][] gameBoard, String direction) {
+		String move = "up";
+		int mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+		boolean moveIsValid = false;
+		if(newAdjacent(move).isValid() && newAdjacent(move).canMoveTo(gameBoard)) {
+			moveIsValid = true;
+		}
+		
+		CoordinatePair temp;
+		
+		temp = newAdjacent("right");
+		if(temp.isValid() && temp.canMoveTo(gameBoard) && !(direction.equals("right"))) {
+			if(moveIsValid == false) {
+				move = "right";
+				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				moveIsValid = true;
+			}
+			else {
+				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
+					move = "right";
+					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				}
+			}
+		}
+		
+		temp = newAdjacent("down");
+		if(temp.isValid() && temp.canMoveTo(gameBoard) && !(direction.equals("down"))) {
+			if(moveIsValid == false) {
+				move = "down";
+				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				moveIsValid = true;
+			}
+			else {
+				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
+					move = "down";
+					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				}
+			}
+		}
+
+		temp = newAdjacent("left");
+		if(temp.isValid() && temp.canMoveTo(gameBoard) && !(direction.equals("left"))) {
+			if(moveIsValid == false) {
+				move = "left";
+				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				moveIsValid = true;
+			}
+			else {
+				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
+					move = "left";
+					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+				}
+			}
+		}
+		
+		return move;
+	}
+	boolean isAdjacentToEnemyHeads(ArrayList<ArrayList<CoordinatePair>> enemies) {
+		for(int i = 1; i < enemies.size(); i++) { //start at 1 because 0 is your own snake
+			CoordinatePair enemyHead = enemies.get(i).get(0);
+			if(Math.abs(enemyHead.x - x) <= 1 || Math.abs(enemyHead.y - y) <= 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
