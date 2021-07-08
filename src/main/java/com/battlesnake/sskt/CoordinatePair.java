@@ -121,7 +121,7 @@ public class CoordinatePair {
 	}
 	String diffMoveWithMostEmptyAdjacent(int[][] gameBoard, String direction) {
 		ArrayList<String> validMoves = new ArrayList<String>();
-		String move = "right";
+		String move = direction;
 		for(int i = 0; i < Constants.CARDINALMOVEMENTS.length; i++) {
 			CoordinatePair tempCheck = newAdjacent(Constants.CARDINALMOVEMENTS[i]);
 			if(tempCheck.isValid() && tempCheck.canMoveTo(gameBoard) && !direction.equals(Constants.CARDINALMOVEMENTS[i])) {
