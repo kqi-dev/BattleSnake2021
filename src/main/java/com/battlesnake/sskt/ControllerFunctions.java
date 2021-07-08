@@ -20,6 +20,7 @@ public class ControllerFunctions {
 		Constants.setWidth(moveRequest.get("board").get("width").asInt());
 		Constants.setHeight(moveRequest.get("board").get("height").asInt());
 		Constants.setHealth(moveRequest.get("you").get("health").asInt());
+		CoordinatePair myLocation = null;
 		
         int[][] gameBoard = new int[Constants.WIDTH][Constants.HEIGHT];
         
@@ -29,7 +30,8 @@ public class ControllerFunctions {
         
         ArrayList<CoordinatePair> mySnake = new ArrayList<CoordinatePair>();
         JsonNode mySnakeHead = moveRequest.get("you").get("head");
-        mySnake.add(new CoordinatePair(mySnakeHead.get("x").asInt(), mySnakeHead.get("y").asInt()));
+        myLocation = new CoordinatePair(mySnakeHead.get("x").asInt(), mySnakeHead.get("y").asInt());
+        mySnake.add(myLocation);
         gameBoard[mySnakeHead.get("x").asInt()][mySnakeHead.get("y").asInt()] = Constants.SNAKEHEAD;
         for(JsonNode segment : moveRequest.get("you").get("body")) {
         	mySnake.add(new CoordinatePair(segment.get("x").asInt(), segment.get("y").asInt()));
@@ -66,11 +68,14 @@ public class ControllerFunctions {
         	gameBoard[foodX][foodY] = Constants.FOOD;
         }
         
+        foodCoordinates = UtilFunctions.sortByProximity(foodCoordinates, myLocation); //sort food by proximity to player location
+        
         /*
          * 
          * MOVE DECISION
          * 
          */
+        
 		String move = "";
         
         //if we are closer to a food item than anyone else, meaning we can get there first, then path there

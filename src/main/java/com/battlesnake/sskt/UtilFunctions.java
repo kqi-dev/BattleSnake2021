@@ -156,4 +156,21 @@ public class UtilFunctions {
 			return false;
 		}
 	}
+	
+	static ArrayList<CoordinatePair> sortByProximity(ArrayList<CoordinatePair> foodCoordinates, CoordinatePair location) {
+		ArrayList<CoordinatePair> sorted = new ArrayList<CoordinatePair>();
+		while(foodCoordinates.size() > 0) {
+			CoordinatePair closest = foodCoordinates.get(0);
+			int index = 0;
+			for(int i = 1; i < foodCoordinates.size(); i++) {
+				if(closest.cardinalDistanceTo(location) > foodCoordinates.get(i).cardinalDistanceTo(location)) {
+					closest = foodCoordinates.get(i);
+					index = i;
+				}
+			}
+			sorted.add(closest);
+			foodCoordinates.remove(index);
+		}
+		return sorted;
+	}
 }
