@@ -10,8 +10,6 @@ import spark.Response;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-import java.util.ArrayList;
 
 import static spark.Spark.port;
 import static spark.Spark.post;
@@ -122,6 +120,11 @@ public class Controller {
                 LOG.info("Data: {}", JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(moveRequest));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
+            }
+            try {
+            	return ControllerFunctions.move(moveRequest);
+            } catch (Exception e) {
+            	
             }
             
             return ControllerFunctions.move(moveRequest);
