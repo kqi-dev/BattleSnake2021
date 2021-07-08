@@ -173,4 +173,16 @@ public class UtilFunctions {
 		}
 		return sorted;
 	}
+	
+	/*static String[] getDirectionsTo(CoordinatePair location, CoordinatePair target) {
+		String[] ret;
+		if(location.x == target.x || location.y == target.y) {
+			ret = new String[1];
+		}
+		else {
+			ret = new String[2];
+		}
+		if(ret.)
+		return ret;
+	}*/
 }

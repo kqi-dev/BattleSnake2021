@@ -86,11 +86,17 @@ public class ControllerFunctions {
         		break;
         	}
         }
-        if(target != null) {
+        if(target != null && move.equals("")) {
         	move = UtilFunctions.moveToTarget(gameBoard, snakeCoordinates.get(0).get(0), target);
         }
         
-
+        //check if we are going down a dangerous tunnel or walking into the head of an enemy we don't want to collide with
+        if(!move.equals("")) {
+        	if(myLocation.newAdjacent(move).numEmptyAdjacent(gameBoard) <= 1) {
+        		move = myLocation.moveWithMostEmptyAdjacent(gameBoard);
+        	}
+        }
+        
         Map<String, String> response = new HashMap<>();
         response.put("move", move);
         return response;

@@ -1,6 +1,7 @@
 package com.battlesnake.sskt;
 
 public class Constants {
+	static final int EMPTYSQUARE = 0;
 	static final int SNAKEHEAD = 1;
 	static final int SNAKEBODY = 2;
 	static final int ENEMYHEAD = 3;
