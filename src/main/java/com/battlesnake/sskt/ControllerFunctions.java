@@ -71,7 +71,8 @@ public class ControllerFunctions {
          * 
          */
         
-		String move = myLocation.moveWithMostEmptyAdjacent(gameBoard);;
+		String move = myLocation.moveWithMostEmptyAdjacent(gameBoard);
+		System.out.println("At the start, I want to move " + move);
         
         //if we are closer to a food item than anyone else, meaning we can get there first, then path there
         CoordinatePair target = null;
@@ -84,21 +85,25 @@ public class ControllerFunctions {
         if(target != null) {
         	move = UtilFunctions.moveToTarget(gameBoard, snakeCoordinates.get(0).get(0), target);
         	System.out.println("I have decided to go towards block " + target.x +", " + target.y);
+    		System.out.println("To go there I will move in direction: " + move);
         }
         
         while(!(myLocation.newAdjacent(move).isValid() && (myLocation.newAdjacent(move).canMoveTo(gameBoard)))) {
         	move = Constants.CARDINALMOVEMENTS[(int)(Math.random() * 4)];
+    		System.out.println("Move was invalid, so I'm choosing to go: " + move);
         }
         
         //check if we are going down a dangerous tunnel or walking into the head of an enemy we don't want to collide with
         if(!move.equals("")) {
         	if(myLocation.newAdjacent(move).numEmptyAdjacent(gameBoard) <= 1) {
+        		System.out.println("Right now I want to move " + move + ", but after checking for most adjacent...");
         		move = myLocation.moveWithMostEmptyAdjacent(gameBoard);
         		System.out.println("I have decided to move " + move);
         	}
         	
         	if(myLocation.newAdjacent(move).isAdjacentToThreatEnemyHeads(snakeCoordinates)) {
         		System.out.println("ENEMY THREAT ADJACENT -----------------------------");
+        		System.out.println("Right now I want to move " + move + ", but after checking for different most adjacent...");
         		move = myLocation.diffMoveWithMostEmptyAdjacent(gameBoard, move);
         		System.out.println("I have decided to move " + move);
         	}
