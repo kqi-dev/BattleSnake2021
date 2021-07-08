@@ -86,6 +86,10 @@ public class ControllerFunctions {
         	System.out.println("I have decided to go towards block " + target.x +", " + target.y);
         }
         
+        while(!(myLocation.newAdjacent(move).isValid() && (myLocation.newAdjacent(move).canMoveTo(gameBoard)))) {
+        	move = Constants.CARDINALMOVEMENTS[(int)(Math.random() * 4)];
+        }
+        
         //check if we are going down a dangerous tunnel or walking into the head of an enemy we don't want to collide with
         if(!move.equals("")) {
         	if(myLocation.newAdjacent(move).numEmptyAdjacent(gameBoard) <= 1) {
