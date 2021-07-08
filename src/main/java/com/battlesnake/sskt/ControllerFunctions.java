@@ -95,7 +95,7 @@ public class ControllerFunctions {
         	if(myLocation.newAdjacent(move).numEmptyAdjacent(gameBoard) <= 1) {
         		move = myLocation.moveWithMostEmptyAdjacent(gameBoard);
         	}
-        	if(myLocation.newAdjacent(move).isAdjacentToEnemyHeads(snakeCoordinates)) {
+        	if(myLocation.newAdjacent(move).isAdjacentToThreatEnemyHeads(snakeCoordinates)) {
         		move = myLocation.diffMoveWithMostEmptyAdjacent(gameBoard, move);
         	}
         }
