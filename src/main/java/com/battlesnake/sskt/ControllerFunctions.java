@@ -56,6 +56,7 @@ public class ControllerFunctions {
         		tempSnake.add(new CoordinatePair(xCoord, yCoord));
         		gameBoard[xCoord][yCoord] = Constants.ENEMYBODY;
         	}
+        	snakeCoordinates.add(tempSnake);
         }
         /*
          * Loading food data
