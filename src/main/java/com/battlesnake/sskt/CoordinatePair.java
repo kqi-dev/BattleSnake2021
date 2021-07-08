@@ -40,18 +40,18 @@ public class CoordinatePair {
 	}
 	
 	CoordinatePair newAdjacent(String direction) {
-		CoordinatePair ret = new CoordinatePair(x, y);
+		CoordinatePair ret;
 		if(direction.equals("up")) {
-			ret.y++;
+			ret = new CoordinatePair(x, y + 1);
 		}
 		else if(direction.equals("right")) {
-			ret.x++;
+			ret = new CoordinatePair(x + 1, y);
 		}
 		else if(direction.equals("down")) {
-			ret.y--;
+			ret = new CoordinatePair(x, y - 1);
 		}
 		else {
-			ret.x--;
+			ret = new CoordinatePair(x - 1, y);
 		}
 		return ret;
 	}
@@ -94,117 +94,55 @@ public class CoordinatePair {
 	}
 	
 	String moveWithMostEmptyAdjacent(int[][] gameBoard) {
-		String move = "up";
-		int mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-		boolean moveIsValid = false;
-		if(newAdjacent(move).isValid() && newAdjacent(move).canMoveTo(gameBoard)) {
-			moveIsValid = true;
-		}
-		
-		CoordinatePair temp;
-		
-		temp = newAdjacent("right");
-		if(temp.isValid() && temp.canMoveTo(gameBoard)) {
-			if(moveIsValid == false) {
-				move = "right";
-				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				moveIsValid = true;
+		ArrayList<String> validMoves = new ArrayList<String>();
+		String move = "right";
+		for(int i = 0; i < Constants.CARDINALMOVEMENTS.length; i++) {
+			CoordinatePair tempCheck = newAdjacent(Constants.CARDINALMOVEMENTS[i]);
+			if(tempCheck.isValid() && tempCheck.canMoveTo(gameBoard)) {
+				validMoves.add(Constants.CARDINALMOVEMENTS[i]);
 			}
-			else {
-				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
-					move = "right";
-					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+		}
+		if(validMoves.size() == 0) {
+			System.out.println("THIS MEANS THERE ARE NO VALID MOVES TO MAKE AND DEATH SHOULD BE IMMINENT");
+			return move;
+		}
+		else {
+			move = validMoves.get(0);
+			int mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+			for(int i = 1; i < validMoves.size(); i++) {
+				CoordinatePair targetTemp = newAdjacent(validMoves.get(i));
+				if(targetTemp.numEmptyAdjacent(gameBoard) > mostEmpty) {
+					move = validMoves.get(i);
+					mostEmpty = targetTemp.numEmptyAdjacent(gameBoard);
 				}
 			}
 		}
-		
-		temp = newAdjacent("down");
-		if(temp.isValid() && temp.canMoveTo(gameBoard)) {
-			if(moveIsValid == false) {
-				move = "down";
-				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				moveIsValid = true;
-			}
-			else {
-				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
-					move = "down";
-					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				}
-			}
-		}
-
-		temp = newAdjacent("left");
-		if(temp.isValid() && temp.canMoveTo(gameBoard)) {
-			if(moveIsValid == false) {
-				move = "left";
-				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				moveIsValid = true;
-			}
-			else {
-				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
-					move = "left";
-					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				}
-			}
-		}
-		
 		return move;
 	}
 	String diffMoveWithMostEmptyAdjacent(int[][] gameBoard, String direction) {
-		String move = "up";
-		int mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-		boolean moveIsValid = false;
-		if(newAdjacent(move).isValid() && newAdjacent(move).canMoveTo(gameBoard)) {
-			moveIsValid = true;
-		}
-		
-		CoordinatePair temp;
-		
-		temp = newAdjacent("right");
-		if(temp.isValid() && temp.canMoveTo(gameBoard) && !(direction.equals("right"))) {
-			if(moveIsValid == false) {
-				move = "right";
-				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				moveIsValid = true;
+		ArrayList<String> validMoves = new ArrayList<String>();
+		String move = "right";
+		for(int i = 0; i < Constants.CARDINALMOVEMENTS.length; i++) {
+			CoordinatePair tempCheck = newAdjacent(Constants.CARDINALMOVEMENTS[i]);
+			if(tempCheck.isValid() && tempCheck.canMoveTo(gameBoard) && !direction.equals(Constants.CARDINALMOVEMENTS[i])) {
+				validMoves.add(Constants.CARDINALMOVEMENTS[i]);
 			}
-			else {
-				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
-					move = "right";
-					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+		}
+		if(validMoves.size() == 0) {
+			System.out.println("THIS MEANS THERE ARE NO VALID MOVES TO MAKE AND DEATH SHOULD BE IMMINENT");
+			return move;
+		}
+		else {
+			move = validMoves.get(0);
+			int mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
+			for(int i = 1; i < validMoves.size(); i++) {
+				CoordinatePair targetTemp = newAdjacent(validMoves.get(i));
+				if(targetTemp.numEmptyAdjacent(gameBoard) > mostEmpty) {
+					move = validMoves.get(i);
+					mostEmpty = targetTemp.numEmptyAdjacent(gameBoard);
 				}
 			}
 		}
-		
-		temp = newAdjacent("down");
-		if(temp.isValid() && temp.canMoveTo(gameBoard) && !(direction.equals("down"))) {
-			if(moveIsValid == false) {
-				move = "down";
-				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				moveIsValid = true;
-			}
-			else {
-				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
-					move = "down";
-					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				}
-			}
-		}
-
-		temp = newAdjacent("left");
-		if(temp.isValid() && temp.canMoveTo(gameBoard) && !(direction.equals("left"))) {
-			if(moveIsValid == false) {
-				move = "left";
-				mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				moveIsValid = true;
-			}
-			else {
-				if(mostEmpty < temp.numEmptyAdjacent(gameBoard)) {
-					move = "left";
-					mostEmpty = newAdjacent(move).numEmptyAdjacent(gameBoard);
-				}
-			}
-		}
-		
 		return move;
 	}
 	boolean isAdjacentToEnemyHeads(ArrayList<ArrayList<CoordinatePair>> enemies) {
