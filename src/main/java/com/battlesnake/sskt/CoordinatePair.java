@@ -219,8 +219,6 @@ public class CoordinatePair {
 	boolean isAdjacentToThreatEnemyHeads(ArrayList<ArrayList<CoordinatePair>> enemies) {
 		for(int i = 1; i < enemies.size(); i++) { //start at 1 because 0 is your own snake
 			CoordinatePair enemyHead = enemies.get(i).get(0);
-			System.out.println("Enemy head is at " + enemyHead.x + ", " + enemyHead.y);
-			System.out.println("Our location is at " + x +", " + y);
 			if(Math.abs(enemyHead.x - x) <= 1 || Math.abs(enemyHead.y - y) <= 1) {
 				if(enemies.get(i).size() >= enemies.get(0).size()) {
 					return true;

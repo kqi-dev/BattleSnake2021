@@ -31,8 +31,6 @@ public class ControllerFunctions {
         ArrayList<CoordinatePair> mySnake = new ArrayList<CoordinatePair>();
         JsonNode mySnakeHead = moveRequest.get("you").get("head");
         myLocation = new CoordinatePair(mySnakeHead.get("x").asInt(), mySnakeHead.get("y").asInt());
-        mySnake.add(myLocation);
-        gameBoard[mySnakeHead.get("x").asInt()][mySnakeHead.get("y").asInt()] = Constants.SNAKEHEAD;
         for(JsonNode segment : moveRequest.get("you").get("body")) {
         	mySnake.add(new CoordinatePair(segment.get("x").asInt(), segment.get("y").asInt()));
         	gameBoard[segment.get("x").asInt()][segment.get("y").asInt()] = Constants.SNAKEBODY;
@@ -43,10 +41,6 @@ public class ControllerFunctions {
         JsonNode otherSnakes = moveRequest.get("board").get("snakes");
         for(JsonNode snake : otherSnakes) {
         	ArrayList<CoordinatePair> tempSnake = new ArrayList<CoordinatePair>();
-        	int tempHeadX = snake.get("head").get("x").asInt();
-        	int tempHeadY = snake.get("head").get("y").asInt();
-        	tempSnake.add(new CoordinatePair(tempHeadX, tempHeadY)); //head
-        	gameBoard[tempHeadX][tempHeadY] = Constants.ENEMYHEAD;
         	if(snake.get("id").equals(moveRequest.get("you").get("id"))) {
         		continue;
         	}
@@ -96,15 +90,20 @@ public class ControllerFunctions {
         if(!move.equals("")) {
         	if(myLocation.newAdjacent(move).numEmptyAdjacent(gameBoard) <= 1) {
         		move = myLocation.moveWithMostEmptyAdjacent(gameBoard);
+        		System.out.println("I have decided to move " + move);
         	}
-        	System.out.println(snakeCoordinates.size() + ": this is how many snakes there are on the board right now");
-        	System.out.println(snakeCoordinates.get(0).size() + ": this is how large my snake is right now");
-        	System.out.println(snakeCoordinates.get(1).size() + ": this is how large some random enemy snake is right now");
         	
         	if(myLocation.newAdjacent(move).isAdjacentToThreatEnemyHeads(snakeCoordinates)) {
         		System.out.println("ENEMY THREAT ADJACENT -----------------------------");
         		move = myLocation.diffMoveWithMostEmptyAdjacent(gameBoard, move);
+        		System.out.println("I have decided to move " + move);
         	}
+        }
+        
+        System.out.println("This is where I think the heads are");
+        System.out.println("I am" + myLocation.x + ", " + myLocation.y);
+        for(int i = 0; i < snakeCoordinates.size(); i++){
+        	System.out.println("Snake of index " + i + " has a head at: " + snakeCoordinates.get(i).get(0).x + ", " + snakeCoordinates.get(i).get(0).y);
         }
         
         Map<String, String> response = new HashMap<>();
