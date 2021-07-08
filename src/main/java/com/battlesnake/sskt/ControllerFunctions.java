@@ -76,7 +76,7 @@ public class ControllerFunctions {
          * 
          */
         
-		String move = "";
+		String move = "left";
         
         //if we are closer to a food item than anyone else, meaning we can get there first, then path there
         CoordinatePair target = null;
@@ -86,8 +86,9 @@ public class ControllerFunctions {
         		break;
         	}
         }
-        if(target != null && move.equals("")) {
+        if(target != null) {
         	move = UtilFunctions.moveToTarget(gameBoard, snakeCoordinates.get(0).get(0), target);
+        	System.out.println("I have decided to go towards block " + target.x +", " + target.y);
         }
         
         //check if we are going down a dangerous tunnel or walking into the head of an enemy we don't want to collide with
