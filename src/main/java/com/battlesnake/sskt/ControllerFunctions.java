@@ -88,11 +88,6 @@ public class ControllerFunctions {
     		System.out.println("To go there I will move in direction: " + move);
         }
         
-        while(!(myLocation.newAdjacent(move).isValid() && (myLocation.newAdjacent(move).canMoveTo(gameBoard)))) {
-        	move = Constants.CARDINALMOVEMENTS[(int)(Math.random() * 4)];
-    		System.out.println("Move was invalid, so I'm choosing to go: " + move);
-        }
-        
         //check if we are going down a dangerous tunnel or walking into the head of an enemy we don't want to collide with
         if(!move.equals("")) {
         	if(myLocation.newAdjacent(move).numEmptyAdjacent(gameBoard) <= 1) {
