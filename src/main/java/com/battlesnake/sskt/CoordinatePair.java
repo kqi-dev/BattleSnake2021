@@ -82,7 +82,7 @@ public class CoordinatePair {
 		else {
 			ret--;
 		}
-		if((new CoordinatePair(x - 1, y + 1)).isValid()) {
+		if((new CoordinatePair(x - 1, y)).isValid()) {
 			if(gameBoard[x - 1][y] != Constants.EMPTYSQUARE && gameBoard[x - 1][y] != Constants.FOOD) {
 				ret--;
 			}
