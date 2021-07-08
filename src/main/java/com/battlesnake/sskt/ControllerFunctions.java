@@ -97,6 +97,7 @@ public class ControllerFunctions {
         		move = myLocation.moveWithMostEmptyAdjacent(gameBoard);
         	}
         	if(myLocation.newAdjacent(move).isAdjacentToThreatEnemyHeads(snakeCoordinates)) {
+        		System.out.println("ENEMY THREAT ADJACENT -----------------------------");
         		move = myLocation.diffMoveWithMostEmptyAdjacent(gameBoard, move);
         	}
         }
