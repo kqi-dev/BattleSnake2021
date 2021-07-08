@@ -71,7 +71,7 @@ public class ControllerFunctions {
          * 
          */
         
-		String move = "left";
+		String move = myLocation.moveWithMostEmptyAdjacent(gameBoard);;
         
         //if we are closer to a food item than anyone else, meaning we can get there first, then path there
         CoordinatePair target = null;
