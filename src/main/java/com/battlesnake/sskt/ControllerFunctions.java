@@ -96,6 +96,10 @@ public class ControllerFunctions {
         	if(myLocation.newAdjacent(move).numEmptyAdjacent(gameBoard) <= 1) {
         		move = myLocation.moveWithMostEmptyAdjacent(gameBoard);
         	}
+        	System.out.println(snakeCoordinates.size() + ": this is how many snakes there are on the board right now");
+        	System.out.println(snakeCoordinates.get(0).size() + ": this is how large my snake is right now");
+        	System.out.println(snakeCoordinates.get(1).size() + ": this is how large some random enemy snake is right now");
+        	
         	if(myLocation.newAdjacent(move).isAdjacentToThreatEnemyHeads(snakeCoordinates)) {
         		System.out.println("ENEMY THREAT ADJACENT -----------------------------");
         		move = myLocation.diffMoveWithMostEmptyAdjacent(gameBoard, move);
