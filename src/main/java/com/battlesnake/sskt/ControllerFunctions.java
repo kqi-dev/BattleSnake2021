@@ -90,8 +90,8 @@ public class ControllerFunctions {
         
         //check if we are going down a dangerous tunnel or walking into the head of an enemy we don't want to collide with
         if(!move.equals("")) {
-        	if(myLocation.newAdjacent(move).numEmptyAdjacent(gameBoard) <= 1) {
-        		System.out.println("Right now I want to move " + move + ", but after checking for most adjacent...");
+        	if(UtilFunctions.floodfill(myLocation.newAdjacent(move), gameBoard) < snakeCoordinates.get(0).size() + 1) {
+        		System.out.println("Right now I want to move " + move + ", but after checking with floodfill...");
         		move = myLocation.moveWithMostEmptyAdjacent(gameBoard);
         		System.out.println("I have decided to move " + move);
         	}
@@ -105,7 +105,7 @@ public class ControllerFunctions {
         }
         
         System.out.println("This is where I think the heads are");
-        System.out.println("I am" + myLocation.x + ", " + myLocation.y);
+        System.out.println("I am at " + myLocation.x + ", " + myLocation.y);
         for(int i = 0; i < snakeCoordinates.size(); i++){
         	System.out.println("Snake of index " + i + " has a head at: " + snakeCoordinates.get(i).get(0).x + ", " + snakeCoordinates.get(i).get(0).y);
         }

@@ -115,6 +115,11 @@ public class CoordinatePair {
 					move = validMoves.get(i);
 					mostEmpty = targetTemp.numEmptyAdjacent(gameBoard);
 				}
+        else if(targetTemp.numEmptyAdjacent(gameBoard) == mostEmpty) {
+          if(UtilFunctions.floodfill(targetTemp, gameBoard) > UtilFunctions.floodfill(newAdjacent(move), gameBoard)) {
+            move = validMoves.get(i);
+          }
+        }
 			}
 		}
 		return move;
@@ -141,6 +146,11 @@ public class CoordinatePair {
 					move = validMoves.get(i);
 					mostEmpty = targetTemp.numEmptyAdjacent(gameBoard);
 				}
+        else if(targetTemp.numEmptyAdjacent(gameBoard) == mostEmpty) {
+          if(UtilFunctions.floodfill(targetTemp, gameBoard) > UtilFunctions.floodfill(newAdjacent(move), gameBoard)) {
+            move = validMoves.get(i);
+          }
+        }
 			}
 		}
 		return move;

@@ -3,27 +3,30 @@ package com.battlesnake.sskt;
 import java.util.ArrayList;
 
 public class UtilFunctions {
-	static int[][] floodfill(CoordinatePair head) { //probably a useless function after realizing you can do this mathematically due to movement constraints
-		int[][] ret = new int[Constants.WIDTH][Constants.HEIGHT];
-		floodfillHelper(new CoordinatePair(head.x, head.y), 0, ret);
+	static int floodfill(CoordinatePair head, int[][] gameBoard) { //probably a useless function after realizing you can do this mathematically due to movement constraints
+    boolean[][] visited = new boolean[Constants.WIDTH][Constants.HEIGHT];
 
-		return ret;
+	  return floodfillHelper(new CoordinatePair(head.x, head.y), gameBoard, visited);
 	}
   
-	private static void floodfillHelper(CoordinatePair head, int dist, int[][] ret) {
+	private static int floodfillHelper(CoordinatePair head, int[][] gameBoard, boolean[][] visited) {
 		if(head.x < 0 || head.x >= Constants.WIDTH || head.y < 0 || head.y >= Constants.HEIGHT) {
-			return;
+			return 0;
 		}
-		if(ret[head.x][head.y] != 0) {
-			return;
+		if(visited[head.x][head.y] == true) {
+			return 0;
 		}
-
-		ret[head.x][head.y] = dist;
-
-		floodfillHelper(new CoordinatePair(head.x + 1, head.y), dist + 1, ret);
-		floodfillHelper(new CoordinatePair(head.x - 1, head.y), dist + 1, ret);
-		floodfillHelper(new CoordinatePair(head.x, head.y + 1), dist + 1, ret);
-		floodfillHelper(new CoordinatePair(head.x, head.y - 1), dist + 1, ret);
+    else {
+      if(gameBoard[head.x][head.y] != Constants.EMPTYSQUARE && gameBoard[head.x][head.y] != Constants.FOOD) {
+        return 0;
+      }
+    }
+    visited[head.x][head.y] = true;
+    return 1 + 
+      floodfillHelper(new CoordinatePair(head.x + 1, head.y), gameBoard, visited) +
+		  floodfillHelper(new CoordinatePair(head.x - 1, head.y), gameBoard, visited) +
+		  floodfillHelper(new CoordinatePair(head.x, head.y + 1), gameBoard, visited) +
+		  floodfillHelper(new CoordinatePair(head.x, head.y - 1), gameBoard, visited);
 	}
 	
 	static boolean isClosestTo(ArrayList<ArrayList<CoordinatePair>> SnakeCoordinates, CoordinatePair food) {
