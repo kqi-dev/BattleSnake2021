@@ -117,6 +117,17 @@ public class ControllerFunctions {
         for(int i = 0; i < snakeCoordinates.size(); i++){
         	System.out.println("Snake of index " + i + " has a head at: " + snakeCoordinates.get(i).get(0).x + ", " + snakeCoordinates.get(i).get(0).y);
         }
+
+        //if we're going somewhere we'd die, let's not do that
+        if(UtilFunctions.floodfill(myLocation.newAdjacent(move), gameBoard) < snakeCoordinates.get(0).size() + 2) {
+          for(int i = 0; i < Constants.CARDINALMOVEMENTS.length; i++) {
+            if(UtilFunctions.floodfill(myLocation.newAdjacent(Constants.CARDINALMOVEMENTS[i]), gameBoard) >= snakeCoordinates.get(0).size() + 2) {
+              move = Constants.CARDINALMOVEMENTS[i];
+              System.out.println("LIFE SAVED BY MOVING " + move + " INSTEAD");
+              break;
+            }
+          }
+        }
         
         Map<String, String> response = new HashMap<>();
         response.put("move", move);
