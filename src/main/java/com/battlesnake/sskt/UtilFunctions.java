@@ -53,7 +53,7 @@ public class UtilFunctions {
         if(SnakeCoordinates.get(i).size() < SnakeCoordinates.get(0).size()) {
           continue;
         }
-        if(SnakeCoordinates.get(0).get(0).cardinalDistanceTo(food) < 3) {
+        if(SnakeCoordinates.get(0).get(0).cardinalDistanceTo(food) < 2) {
           return false;
         }
       }
