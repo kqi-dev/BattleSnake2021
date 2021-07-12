@@ -82,6 +82,14 @@ public class ControllerFunctions {
         		break;
         	}
         }
+        if(target == null) {
+          for(CoordinatePair food : foodCoordinates) {
+        	if(UtilFunctions.isClosestEqualTo(snakeCoordinates, food)) {
+        		target = food;
+        		break;
+        	}
+        }
+        }
         if(target != null) {
         	move = UtilFunctions.moveToTarget(gameBoard, snakeCoordinates.get(0).get(0), target);
         	System.out.println("I have decided to go towards block " + target.x +", " + target.y);

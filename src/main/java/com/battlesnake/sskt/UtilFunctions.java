@@ -40,6 +40,26 @@ public class UtilFunctions {
 		}
 		return true;
 	}
+
+  static boolean isClosestEqualTo(ArrayList<ArrayList<CoordinatePair>> SnakeCoordinates, CoordinatePair food) {
+		if(!(SnakeCoordinates.size() > 1)) {
+			return true;
+		}
+		for(int i = 1; i < SnakeCoordinates.size(); i++) {
+			if(SnakeCoordinates.get(0).get(0).cardinalDistanceTo(food) > SnakeCoordinates.get(i).get(0).cardinalDistanceTo(food)) {
+				return false;
+			}
+      else if(SnakeCoordinates.get(0).get(0).cardinalDistanceTo(food) == SnakeCoordinates.get(i).get(0).cardinalDistanceTo(food)) {
+        if(SnakeCoordinates.get(i).size() < SnakeCoordinates.get(0).size()) {
+          continue;
+        }
+        if(SnakeCoordinates.get(0).get(0).cardinalDistanceTo(food) < 3) {
+          return false;
+        }
+      }
+		}
+		return true;
+	}
 	
 	static String moveToTarget(int[][] gameBoard, CoordinatePair snakeHead, CoordinatePair target) {
 		if(snakeHead.x == target.x && snakeHead.y == target.y) {
