@@ -17,8 +17,6 @@ public class ControllerFunctions {
         return response;
     }
 	public static Map<String, String> move(JsonNode moveRequest) {
-		Constants.setWidth(moveRequest.get("board").get("width").asInt());
-		Constants.setHeight(moveRequest.get("board").get("height").asInt());
 		Constants.setHealth(moveRequest.get("you").get("health").asInt());
 		CoordinatePair myLocation = null;
 		
