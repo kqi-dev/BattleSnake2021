@@ -1,7 +1,6 @@
 package com.battlesnake.sskt;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -92,18 +91,17 @@ public class UtilFunctions {
   				return pairs[popped.x][popped.y];
   			}
   			else {
-  				if(!popped.isValid() || visited[popped.x][popped.y] == false) {
-  					continue;
-  				}
   				visited[popped.x][popped.y] = true; 
   				if(!popped.canMoveTo(gameBoard)) {
   					continue;
   				}
   				CoordinatePair[] orderedPairs = orderedDirections(snakeHead, target);
   				for(int i = 0; i < orderedPairs.length; i++) {
-  					queue.add(orderedPairs[i]);
-  					if(pairs[orderedPairs[i].x][orderedPairs[i].y] == null) {
-  						pairs[orderedPairs[i].x][orderedPairs[i].y] = pairs[popped.x][popped.y]; 
+  					if(orderedPairs[i].isValid() || visited[orderedPairs[i].x][orderedPairs[i].y] == false) {
+  						queue.add(orderedPairs[i]);
+  						if(pairs[orderedPairs[i].x][orderedPairs[i].y] == null) {
+  							pairs[orderedPairs[i].x][orderedPairs[i].y] = pairs[popped.x][popped.y]; 
+  						}
   					}
   				}
   			}
