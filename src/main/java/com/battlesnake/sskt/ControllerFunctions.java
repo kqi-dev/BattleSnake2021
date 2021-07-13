@@ -120,6 +120,7 @@ public class ControllerFunctions {
         }
 
         //if we're going somewhere we'd die, let's not do that
+        String tempMove = move;
         if(UtilFunctions.floodfill(myLocation.newAdjacent(move), gameBoard) < snakeCoordinates.get(0).size() + 2) {
           for(int i = 0; i < Constants.CARDINALMOVEMENTS.length; i++) {
             if(UtilFunctions.floodfill(myLocation.newAdjacent(Constants.CARDINALMOVEMENTS[i]), gameBoard) >= snakeCoordinates.get(0).size() + 2) {
@@ -128,6 +129,9 @@ public class ControllerFunctions {
               break;
             }
           }
+        }
+        if(tempMove.equals(move) && UtilFunctions.floodfill(myLocation.newAdjacent(move), gameBoard) < snakeCoordinates.get(0).size() - 2) {
+        	move = UtilFunctions.moveToTarget(gameBoard, snakeCoordinates.get(0).get(0), snakeCoordinates.get(0).get(snakeCoordinates.get(0).size() - 1));
         }
         
         Map<String, String> response = new HashMap<>();
