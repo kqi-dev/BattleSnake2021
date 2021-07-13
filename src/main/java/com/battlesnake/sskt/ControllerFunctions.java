@@ -88,6 +88,9 @@ public class ControllerFunctions {
         	}
         }
         }
+        if(target == null) {
+        	target = snakeCoordinates.get(0).get(snakeCoordinates.get(0).size() - 1);
+        }
         if(target != null) {
         	move = UtilFunctions.moveToTarget(gameBoard, snakeCoordinates.get(0).get(0), target);
         	System.out.println("I have decided to go towards block " + target.x +", " + target.y);
