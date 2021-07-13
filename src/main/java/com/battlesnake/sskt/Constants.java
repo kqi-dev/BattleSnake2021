@@ -6,7 +6,8 @@ public class Constants {
 	static final int SNAKEBODY = 2;
 	static final int ENEMYHEAD = 3;
 	static final int ENEMYBODY = 4;
-	static final int FOOD = 5;
+	static final int ENEMYTAIL = 5;
+	static final int FOOD = 6;
 	
 	static final String[] CARDINALMOVEMENTS = {"up", "right", "down", "left"};
 	

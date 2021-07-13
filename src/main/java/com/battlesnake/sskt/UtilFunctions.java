@@ -1,6 +1,9 @@
 package com.battlesnake.sskt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class UtilFunctions {
 	static int floodfill(CoordinatePair head, int[][] gameBoard) { //probably a useless function after realizing you can do this mathematically due to movement constraints
@@ -22,11 +25,10 @@ public class UtilFunctions {
       }
     }
     visited[head.x][head.y] = true;
-    return 1 + 
-      floodfillHelper(new CoordinatePair(head.x + 1, head.y), gameBoard, visited) +
-		  floodfillHelper(new CoordinatePair(head.x - 1, head.y), gameBoard, visited) +
-		  floodfillHelper(new CoordinatePair(head.x, head.y + 1), gameBoard, visited) +
-		  floodfillHelper(new CoordinatePair(head.x, head.y - 1), gameBoard, visited);
+    return 1 + floodfillHelper(new CoordinatePair(head.x + 1, head.y), gameBoard, visited) +
+    		floodfillHelper(new CoordinatePair(head.x - 1, head.y), gameBoard, visited) +
+    		floodfillHelper(new CoordinatePair(head.x, head.y + 1), gameBoard, visited) +
+    		floodfillHelper(new CoordinatePair(head.x, head.y - 1), gameBoard, visited);
 	}
 	
 	static boolean isClosestTo(ArrayList<ArrayList<CoordinatePair>> SnakeCoordinates, CoordinatePair food) {
@@ -60,8 +62,96 @@ public class UtilFunctions {
 		}
 		return true;
 	}
+  
+  	static String moveToTarget(int[][] gameBoard, CoordinatePair snakeHead, CoordinatePair target) { //now with BFS... but better!
+  		boolean[][] visited = new boolean[Constants.WIDTH][Constants.HEIGHT];
+  		String[][] pairs = new String[Constants.WIDTH][Constants.HEIGHT];
+  		CoordinatePair pairTemp = new CoordinatePair(snakeHead.x, snakeHead.y);
+  		pairTemp.newAdjacent("left");
+  		if(pairTemp.isValid()) {
+  			pairs[pairTemp.x][pairTemp.y] = "left";
+  		}
+  		pairTemp.newAdjacent("right");
+  		if(pairTemp.isValid()) {
+  			pairs[pairTemp.x][pairTemp.y] = "right";
+  		}
+  		pairTemp.newAdjacent("down");
+  		if(pairTemp.isValid()) {
+  			pairs[pairTemp.x][pairTemp.y] = "down";
+  		}
+  		pairTemp.newAdjacent("up");
+  		if(pairTemp.isValid()) {
+  			pairs[pairTemp.x][pairTemp.y] = "up";
+  		}
+  		Queue<CoordinatePair> queue = new LinkedList<CoordinatePair>();
+  		queue.add(snakeHead);
+  		
+  		while(!queue.isEmpty()) {
+  			CoordinatePair popped = queue.poll();
+  			if(popped.x == target.x && popped.y == target.y) {
+  				return pairs[popped.x][popped.y];
+  			}
+  			else {
+  				if(!popped.isValid() || visited[popped.x][popped.y] == false) {
+  					continue;
+  				}
+  				visited[popped.x][popped.y] = true; 
+  				if(!popped.canMoveTo(gameBoard)) {
+  					continue;
+  				}
+  				CoordinatePair[] orderedPairs = orderedDirections(snakeHead, target);
+  				for(int i = 0; i < orderedPairs.length; i++) {
+  					queue.add(orderedPairs[i]);
+  					if(pairs[orderedPairs[i].x][orderedPairs[i].y] == null) {
+  						pairs[orderedPairs[i].x][orderedPairs[i].y] = pairs[popped.x][popped.y]; 
+  					}
+  				}
+  			}
+  		}
+  		
+  		return "null";
+  	}
+  	
+  	static CoordinatePair[] orderedDirections(CoordinatePair snakeHead, CoordinatePair target) {
+  		CoordinatePair[] ret = new CoordinatePair[4];
+  		if(snakeHead.x == target.x) {
+  			if(snakeHead.y < target.y) {
+  				return new CoordinatePair[] {snakeHead.newAdjacent("up"), snakeHead.newAdjacent("left"), snakeHead.newAdjacent("right"), snakeHead.newAdjacent("down")};
+  			}
+  			else if(snakeHead.y > target.y) {
+  				return new CoordinatePair[] {snakeHead.newAdjacent("down"), snakeHead.newAdjacent("left"), snakeHead.newAdjacent("right"), snakeHead.newAdjacent("up")};
+  			}
+  			else {
+  				return ret;
+  			}
+  		}
+  		if(snakeHead.x > target.x) { //go left
+  			if(snakeHead.y < target.y) {
+  				return new CoordinatePair[] {snakeHead.newAdjacent("left"), snakeHead.newAdjacent("up"), snakeHead.newAdjacent("right"), snakeHead.newAdjacent("down")};
+  			}
+  			else if(snakeHead.y > target.y) {
+  				return new CoordinatePair[] {snakeHead.newAdjacent("left"), snakeHead.newAdjacent("down"), snakeHead.newAdjacent("right"), snakeHead.newAdjacent("up")};
+  			}
+  			else {
+  				return new CoordinatePair[] {snakeHead.newAdjacent("left"), snakeHead.newAdjacent("down"), snakeHead.newAdjacent("up"), snakeHead.newAdjacent("right")};
+  			}
+  		}
+  		else if(snakeHead.x < target.x) {
+  			if(snakeHead.y < target.y) {
+  				return new CoordinatePair[] {snakeHead.newAdjacent("right"), snakeHead.newAdjacent("up"), snakeHead.newAdjacent("left"), snakeHead.newAdjacent("down")};
+  			}
+  			else if(snakeHead.y > target.y) {
+  				return new CoordinatePair[] {snakeHead.newAdjacent("right"), snakeHead.newAdjacent("down"), snakeHead.newAdjacent("left"), snakeHead.newAdjacent("up")};
+  			}
+  			else {
+  				return new CoordinatePair[] {snakeHead.newAdjacent("right"), snakeHead.newAdjacent("down"), snakeHead.newAdjacent("up"), snakeHead.newAdjacent("left")};
+  			}
+  		}
+  		
+  		return ret;
+  	}
 	
-	static String moveToTarget(int[][] gameBoard, CoordinatePair snakeHead, CoordinatePair target) {
+	static String moveToTargetOld(int[][] gameBoard, CoordinatePair snakeHead, CoordinatePair target) {
 		if(snakeHead.x == target.x && snakeHead.y == target.y) {
 			return safeMove(gameBoard, snakeHead, "random");
 		}
