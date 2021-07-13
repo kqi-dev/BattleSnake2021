@@ -86,21 +86,23 @@ public class UtilFunctions {
   		queue.add(snakeHead);
   		
   		while(!queue.isEmpty()) {
+        System.out.println("I AM LOOPING");
   			CoordinatePair popped = queue.poll();
   			if(popped.x == target.x && popped.y == target.y) {
   				return pairs[popped.x][popped.y];
   			}
   			else {
   				visited[popped.x][popped.y] = true; 
-  				if(!popped.canMoveTo(gameBoard)) {
+  				if(!popped.canMoveTo(gameBoard) && !(popped.x == snakeHead.x && popped.y == snakeHead.y)) {
   					continue;
   				}
-  				CoordinatePair[] orderedPairs = orderedDirections(snakeHead, target);
+  				CoordinatePair[] orderedPairs = orderedDirections(popped, target);
+          System.out.println("ORDERED PAIRS IS ARRAY LENGTH " + orderedPairs.length);
   				for(int i = 0; i < orderedPairs.length; i++) {
-  					if(orderedPairs[i].isValid() || visited[orderedPairs[i].x][orderedPairs[i].y] == false) {
+  					if(orderedPairs[i].isValid() && visited[orderedPairs[i].x][orderedPairs[i].y] == false) {
   						queue.add(orderedPairs[i]);
-  						if(pairs[orderedPairs[i].x][orderedPairs[i].y] == null) {
-  							pairs[orderedPairs[i].x][orderedPairs[i].y] = pairs[popped.x][popped.y]; 
+  						if(orderedPairs[i].x == snakeHead.x && orderedPairs[i].y == snakeHead.y) {
+  							pairs[orderedPairs[i].x][orderedPairs[i].y] = pairs[popped.x][popped.y];
   						}
   					}
   				}
